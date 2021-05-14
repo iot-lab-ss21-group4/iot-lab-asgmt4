@@ -11,9 +11,8 @@
 
 #define MQTT_SUB_TOPIC CONFIG_IOT_PLATFORM_ROOM_BROKER_TOPIC
 
-#define MQTT_BROKER_URI_PATTERN "mqtt://%s"
-#define MQTT_BROKER_URI_BUFFER_SIZE 40
-static char MQTT_BROKER_URI_BUFFER[MQTT_BROKER_URI_BUFFER_SIZE];
+#define MQTT_BROKER_URI_BUFFER "mqtt://" MQTT_BROKER_HOST
+
 
 static const char *TAG_SUB = "ASGM4-SUB";
 
@@ -30,7 +29,7 @@ static void custom_topic_handler(const char *data, int data_len)
 	}
 	else if (strncmp(data, PING_MSG, data_len) == 0)
 	{
-		pingBuiltInLed();
+		pingOnBoardLED();
 	}
 }
 
@@ -81,9 +80,6 @@ void setup_subscriber()
 	gpio_set_direction(TRIGGER_PIN_OUT, GPIO_MODE_OUTPUT);
 
 	// TODO: using the breadboard with I---[][]---O connections sometimes the signal is not going from I PIN to O PIN
-
-	// Create URI
-	snprintf(MQTT_BROKER_URI_BUFFER, MQTT_BROKER_URI_BUFFER_SIZE, MQTT_BROKER_URI_PATTERN, MQTT_BROKER_HOST);
 
 	ESP_LOGI(TAG_SUB, "Use URI: %s", MQTT_BROKER_URI_BUFFER);
 	ESP_LOGI(TAG_SUB, "Use Topic: %s", MQTT_SUB_TOPIC);

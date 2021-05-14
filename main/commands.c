@@ -108,7 +108,7 @@ void test_trigger_pins()
 
 //////COMMANDS//////
 
-void pingBuiltInLed()
+void pingOnBoardLED()
 {
 	gpio_set_direction(ONBOARD_LED_PIN, GPIO_MODE_OUTPUT);
 	gpio_set_level(ONBOARD_LED_PIN, 1);

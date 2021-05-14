@@ -57,6 +57,8 @@
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define LOGICAL_NOT(c) ((c) ? false : true)
 #define STATIC_ASSERT(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1]
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
 
 typedef uint8_t barrier_evt_q_item;
 typedef uint8_t count_display_q_item;
