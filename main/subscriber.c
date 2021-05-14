@@ -28,6 +28,10 @@ static void custom_topic_handler(const char *data, int data_len)
 	{
 		leaveRoom();
 	}
+	else if (strncmp(data, PING_MSG, data_len) == 0)
+	{
+		pingBuiltInLed();
+	}
 }
 
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
@@ -56,6 +60,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 	case MQTT_EVENT_PUBLISHED:
 		break;
 	case MQTT_EVENT_DATA:
+		ESP_LOGI(TAG_SUB, "Received event. Topic: %.*s, Message: %.*s", event->topic_len, event->topic, event->data_len, event->data);
 		if (strncmp(event->topic, MQTT_SUB_TOPIC, event->topic_len) == 0)
 		{
 			custom_topic_handler(event->data, event->data_len);

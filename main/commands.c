@@ -108,6 +108,15 @@ void test_trigger_pins()
 
 //////COMMANDS//////
 
+void pingBuiltInLed()
+{
+	gpio_set_direction(ONBOARD_LED_PIN, GPIO_MODE_OUTPUT);
+	gpio_set_level(ONBOARD_LED_PIN, 1);
+	vTaskDelay(1000 / portTICK_PERIOD_MS);
+	gpio_set_level(ONBOARD_LED_PIN, 0);
+	vTaskDelay(1000 / portTICK_PERIOD_MS);
+}
+
 void enterRoom()
 {
 	ESP_LOGI(TAG, "Command: Enter");
