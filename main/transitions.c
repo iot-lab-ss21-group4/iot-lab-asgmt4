@@ -1,5 +1,6 @@
 #include "common.h"
 #include "transitions.h"
+#include "publisher.h"
 
 #define FLAG_COUNT 2 // number of barrier bits (flags)
 #define INNER_BARRIER_FLAG (1 << 1)
@@ -155,7 +156,8 @@ static void transition_handling_task(void *_)
         }
         if (in_testing_scenario)
             print_sensor_and_fsm_state();
-        // push result
+        else
+        	publish_count();
     }
 }
 static void initialize_null_handles()

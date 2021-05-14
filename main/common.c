@@ -1,6 +1,6 @@
 #include "common.h"
 
-const char *TAG = "ASGM3";
+const char *TAG = "ASGM4";
 volatile uint8_t count = 0;
 xQueueHandle barrier_evt_q = NULL;
 xQueueHandle count_display_q = NULL;

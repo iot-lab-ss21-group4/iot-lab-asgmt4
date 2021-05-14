@@ -69,6 +69,12 @@ menu "Example Configuration"
         help
             This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
             Otherwise, this ESP subscribes to topics from broker to retreive MQTT messages.
+            
+    config TEST_ROOM_COMMANDS
+        bool "Test room commands"
+        default "n"
+        help
+            Test room commands including corner cases.
 
     config BROKER_URI
         string "URI of the MQTT broker"
@@ -115,23 +121,27 @@ menu "Example Configuration"
      	string "sensor name"
      	default "test-sensor-group4"
      		
-     config IOT_PLATFORM_ROOM_TOPIC
+     config IOT_PLATFORM_ROOM_BROKER_TOPIC
      	string "Name of the topic for room events on the IoT Platform"
      	default "ROOM_EVENTS_TEST"
      	help
      		Production topic: 'ROOM_EVENTS'
      		Test topic: 'ROOM_EVENTS_TEST'
      		
-     config IOT_PLATFORM_ROOM_BROKER_URI
-     	string "Broker URI of the room events topic on the IoT platform"
-     	default "iotplatform.caps.in.tum.de:1885"
+     config IOT_PLATFORM_ROOM_BROKER_HOST
+     	string "Host name of the room events broker on the IoT platform"
+     	default "iotplatform.caps.in.tum.de"
      	
-     config IOT_PLATFORM_ROOM_USERNAME
+     config IOT_PLATFORM_ROOM_BROKER_PORT
+     	int "Port of the room events broker on the IoT platform"
+     	default 1885
+     	
+     config IOT_PLATFORM_ROOM_BROKER_USERNAME
      	string "Username for authentication on the room events broker on the IoT platform"
      	default "user1"
      	
-     config IOT_PLATFORM_ROOM_PASSWORD
-     	string "Username for authentication on the room events broker on the IoT platform"
+     config IOT_PLATFORM_ROOM_BROKER_PASSWORD
+     	string "Password for authentication on the room events broker on the IoT platform"
      	help
      		See slides for password
 

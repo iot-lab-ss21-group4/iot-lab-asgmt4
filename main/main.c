@@ -18,10 +18,11 @@ void app_main(void)
 	setup_oled();
 	setup_transitions();
 
-#if !(PUBLISHER)
 	setup_subscriber();
+#if TEST_ROOM_COMMANDS
 	test_trigger_pins();
 #endif
+
 	setup_publisher();
 
 	while (1)
