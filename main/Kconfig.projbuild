@@ -109,17 +109,21 @@ menu "Example Configuration"
      		The group name that is used to login to the IoT Platform Frontend.
      		Necessary in the payload when publishing data to the platform.
      
-     config IOT_PLATFORM_COUNT_USER_ID
+     config IOT_PLATFORM_USER_ID
      	int "User ID"
      	default 48
      	
-     config IOT_PLATFORM_COUNT_DEVICE_ID
+     config IOT_PLATFORM_DEVICE_ID
      	int "Device ID"
      	default 109
      	
      config IOT_PLATFORM_COUNT_SENSOR_NAME
-     	string "sensor name"
-     	default "test-sensor-group4"
+     	string "Sensor name for count value"
+     	default "count"
+     	
+     config IOT_PLATFORM_RESTART_SENSOR_NAME
+     	string "Sensor name for restart"
+     	default "restart"
      		
      config IOT_PLATFORM_ROOM_BROKER_TOPIC
      	string "Name of the topic for room events on the IoT Platform"
