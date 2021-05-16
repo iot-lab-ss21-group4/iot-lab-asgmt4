@@ -24,9 +24,9 @@ void init_common_queues()
         count_display_q = xQueueCreate(COUNT_DISPLAY_Q_SIZE, sizeof(count_display_q_item));
     }
     if (count_publish_q == NULL)
-	{
-    	count_publish_q = xQueueCreate(COUNT_DISPLAY_Q_SIZE, sizeof(count_display_q_item));
-	}
+    {
+        count_publish_q = xQueueCreate(COUNT_DISPLAY_Q_SIZE, sizeof(count_display_q_item));
+    }
 }
 
 void init_esp_dependencies()

@@ -42,10 +42,10 @@ struct tm read_time()
 
 unsigned long long read_epoch_time_in_msec()
 {
-	struct timeval  tv;
-	gettimeofday(&tv, NULL);
-	unsigned long long time_in_ms = (unsigned long long) (tv.tv_sec) * 1000 + (unsigned long long) (tv.tv_usec) / 1000;
-	return time_in_ms;
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    unsigned long long time_in_ms = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
+    return time_in_ms;
 }
 
 void setup_time_management()

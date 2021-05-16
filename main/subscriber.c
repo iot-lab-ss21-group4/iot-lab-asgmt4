@@ -3,7 +3,6 @@
 #include "commands.h"
 #include "mqtt_message.h"
 
-
 #define MQTT_BROKER_HOST CONFIG_IOT_PLATFORM_ROOM_BROKER_HOST
 #define MQTT_BROKER_PORT CONFIG_IOT_PLATFORM_ROOM_BROKER_PORT
 #define MQTT_BROKER_USERNAME CONFIG_IOT_PLATFORM_ROOM_BROKER_USERNAME
@@ -13,9 +12,7 @@
 
 #define MQTT_BROKER_URI_BUFFER "mqtt://" MQTT_BROKER_HOST
 
-
 static const char *TAG_SUB = "ASGM4-SUB";
-
 
 static void custom_topic_handler(const char *data, int data_len)
 {
@@ -88,8 +85,7 @@ void setup_subscriber()
 		.uri = MQTT_BROKER_URI_BUFFER,
 		.port = MQTT_BROKER_PORT,
 		.username = MQTT_BROKER_USERNAME,
-		.password = MQTT_BROKER_PASSWORD
-	};
+		.password = MQTT_BROKER_PASSWORD};
 
 	esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
 	esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, client);
