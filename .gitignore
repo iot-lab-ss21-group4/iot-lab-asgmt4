@@ -94,3 +94,5 @@ CMakeUserPresets.json
 .cproject
 /sdkconfig
 *.old
+
+/.cache/
