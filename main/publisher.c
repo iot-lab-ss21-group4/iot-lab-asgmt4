@@ -1,4 +1,5 @@
 #include "common.h"
+#include "publisher.h"
 #include "time_management.h"
 #include "mqtt_message.h"
 
