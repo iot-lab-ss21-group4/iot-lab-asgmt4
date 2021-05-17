@@ -1,5 +1,6 @@
 #include "common.h"
 #include "commands.h"
+#include "publisher.h"
 
 static uint8_t expected_room_count = 0;
 
@@ -128,6 +129,9 @@ void enterRoom()
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 void leaveRoom()
@@ -141,6 +145,9 @@ void leaveRoom()
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void almostEnterRoom()
@@ -159,6 +166,9 @@ static void almostEnterRoom()
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void almostLeaveRoom()
@@ -177,6 +187,9 @@ static void almostLeaveRoom()
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void peakIntoRoom()
@@ -187,6 +200,9 @@ static void peakIntoRoom()
 	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void peakOutofRoom()
@@ -196,6 +212,9 @@ static void peakOutofRoom()
 	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 // halfwayEnter in forum but name makes no sense
@@ -211,6 +230,9 @@ static void halfwayLeave()
 	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void halfwayEnter()
@@ -225,6 +247,9 @@ static void halfwayEnter()
 	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void manipulationEnter()
@@ -240,6 +265,9 @@ static void manipulationEnter()
 	vTaskDelay(15 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 static void obstructionInside()
@@ -255,6 +283,9 @@ static void obstructionInside()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
 }
 
 ///////////////////////////////////////

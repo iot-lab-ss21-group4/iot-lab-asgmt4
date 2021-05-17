@@ -156,8 +156,6 @@ static void transition_handling_task(void *_)
         }
         if (in_testing_scenario)
             print_sensor_and_fsm_state();
-        else
-            publish_count();
     }
 }
 static void initialize_null_handles()
