@@ -63,27 +63,19 @@ menu "Example Configuration"
         help
             Number of connection retries of the ESP.
 
-    config PUBLISHER
-        bool "ESP will publish MQTT messages to broker"
+    config GET_CLOUD_EVENTS
+        bool "ESP will subscribe to room entry events in IoT platform room broker"
         default "y"
         help
-            This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
-            Otherwise, this ESP subscribes to topics from broker to retreive MQTT messages.
+            This ESP will subscribe to the published room entry/leave events in IoT platform room broker.
+            So, in addition to updating count by changes in the barrier pin levels, it will trigger such
+            changes itself using room events as well.
 
     config TEST_ROOM_COMMANDS
         bool "Test room commands"
         default "n"
         help
-            Test room commands including corner cases.
-
-    config BROKER_URI
-        string "URI of the MQTT broker"
-        default "mqtt://test.mosquitto.org:1883"
-        help
-            Full URI of the MQTT broker to subscribe for room entrance simulation data.
-
-            See the following webpage for further formatting details:
-            https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/protocols/mqtt.html#uri
+            Test room commands including corner cases. Only possible if GET_CLOUD_EVENTS is also "y".
 
     config IOT_PLATFORM_GATEWAY_IP
         string "IP address of the MQTT gateway on the IoT platform"

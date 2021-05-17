@@ -18,9 +18,11 @@ void app_main(void)
 	setup_oled();
 	setup_transitions();
 
+#if GET_CLOUD_EVENTS
 	setup_subscriber();
 #if TEST_ROOM_COMMANDS
 	test_trigger_pins();
+#endif
 #endif
 
 	setup_publisher();
