@@ -69,6 +69,7 @@ extern xQueueHandle barrier_evt_q;
 extern xQueueHandle count_display_q;
 extern xQueueHandle count_publish_q;
 extern volatile bool in_testing_scenario;
+extern struct tm current_time;
 
 void init_logging();
 void init_common_queues();

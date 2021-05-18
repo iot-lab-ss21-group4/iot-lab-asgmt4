@@ -57,4 +57,19 @@ void setup_time_management()
     sntp_set_sync_mode(SNTP_SYNC_MODE_SMOOTH);
     sntp_init();
     obtain_time();
+    current_time = read_time();
+}
+
+void loop_time()
+{
+	struct tm tmp_current_time = read_time();
+	if (current_time.tm_hour == 23 && tmp_current_time.tm_hour == 0){
+		esp_restart();
+	}
+	if (tmp_current_time.tm_min != current_time.tm_min)
+	{
+		current_time = tmp_current_time;
+		// TODO: use different change type for queues so that the whole display does not need to be erased
+		xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
+	}
 }

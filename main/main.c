@@ -29,7 +29,7 @@ void app_main(void)
 
 	while (1)
 	{
-		loop_oled();
+		loop_time();
 		loop_transitions();
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
 	}
