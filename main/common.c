@@ -6,6 +6,7 @@ xQueueHandle barrier_evt_q = NULL;
 xQueueHandle count_display_q = NULL;
 xQueueHandle count_publish_q = NULL;
 volatile bool in_testing_scenario = false;
+struct tm current_time;
 
 void init_logging()
 {
