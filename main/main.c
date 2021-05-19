@@ -22,6 +22,7 @@ void app_main(void)
 	setup_subscriber();
 #if TEST_ROOM_COMMANDS
 	test_trigger_pins();
+	test_milestone_one();
 #endif
 #endif
 

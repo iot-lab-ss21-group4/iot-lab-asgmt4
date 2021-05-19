@@ -49,39 +49,82 @@ static uint8_t expected_room_count = 0;
 		halfwayEnter();                                                    \
 		assert_room_count(expected_room_count, "Test Halfway Enter Room"); \
 	} while (0);
+#define TEST_MANIPULATION_LEAVE_ROOM                                            \
+	do                                                                          \
+	{                                                                           \
+		manipulationLeave();                                                    \
+		assert_room_count(expected_room_count, "Test Manipulation Leave Room"); \
+	} while (0);
 #define TEST_MANIPULATION_ENTER_ROOM                                            \
 	do                                                                          \
 	{                                                                           \
 		manipulationEnter();                                                    \
 		assert_room_count(expected_room_count, "Test Manipulation Enter Room"); \
 	} while (0);
-#define TEST_ALMOST_ENTER_ROOM                                            \
-	do                                                                    \
-	{                                                                     \
-		almostEnterRoom();                                                \
-		assert_room_count(expected_room_count, "Test Almost Enter Room"); \
+#define TEST_BREAKS_OUTER_AND_INNER_BUT_RETURNS_G4                                       \
+	do                                                                    				 \
+	{                                                                     				 \
+		breaksOuterAndInnerButReturnsG4();                                               \
+		assert_room_count(expected_room_count, "Test BreaksOuterAndInnerButReturns G4"); \
 	} while (0);
-#define TEST_ALMOST_LEAVE_ROOM                                            \
-	do                                                                    \
-	{                                                                     \
-		almostLeaveRoom();                                                \
-		assert_room_count(expected_room_count, "Test Almost Leave Room"); \
+#define TEST_BREAKS_INNER_AND_OUTER_BUT_RETURNS_G4                                       \
+	do                                                                    				 \
+	{                                                                     				 \
+		breaksInnerAndOuterButReturnsG4();                                               \
+		assert_room_count(expected_room_count, "Test BreaksInnerAndOuterButReturns G4"); \
+	} while (0);
+#define TEST_PERSON_TURNED_G9                                            \
+	do                                                                   \
+	{                                                                    \
+		personTurnedG9();                                                \
+		assert_room_count(expected_room_count, "Test Person Turned G9"); \
+	} while (0);
+#define TEST_UNSURE_ENTER_ROOM                                            \
+	do                                                               \
+	{                                                                \
+		unsureEnter();                                               \
+		if (expected_room_count < MAX_ROOM_COUNT)                    \
+			expected_room_count++;                                 	 \
+		assert_room_count(expected_room_count, "Test Unsure Enter"); \
+	} while (0);
+#define TEST_PEEK_INTO_AND_LEAVE_G11                                            \
+	do                                                                          \
+	{                                                                           \
+		peekIntoandLeaveG11();                                                  \
+		if (expected_room_count > MIN_ROOM_COUNT)                               \
+			expected_room_count--;                                              \
+		assert_room_count(expected_room_count, "Test Peek Into And Leave G11"); \
+	} while (0);
+#define TEST_SUCCESSIVE_ENTER_ROOM                                       \
+	do                                                                   \
+	{                                                                    \
+		successiveEnter();                                               \
+		if (expected_room_count < MAX_ROOM_COUNT)                        \
+			expected_room_count++;                                 	     \
+		if (expected_room_count < MAX_ROOM_COUNT)                        \
+			expected_room_count++;                                 	     \
+		assert_room_count(expected_room_count, "Test Successive Enter"); \
 	} while (0);
 
-static void almostEnterRoom();
-static void almostLeaveRoom();
+static void breaksOuterAndInnerButReturnsG4();
+static void breaksInnerAndOuterButReturnsG4();
 static void peakIntoRoom();
 static void peakOutofRoom();
 static void halfwayLeave();
 static void halfwayEnter();
 static void manipulationEnter();
+static void manipulationLeave();
 static void obstructionInside();
+static void personTurnedG9();
+static void unsureEnter();
+static void peekIntoandLeaveG11();
+static void successiveEnter();
 static void assert_room_count(uint8_t expected_count, const char *test_description);
 
 void test_trigger_pins()
 {
 	in_testing_scenario = true;
-	ESP_LOGI(TAG, "Start testing");
+	ESP_LOGI(TAG, "Start testing: Scenario Basic");
 	ESP_LOGI(TAG, "Inner Trigger PIN: %d", TRIGGER_PIN_IN);
 	ESP_LOGI(TAG, "Outer Trigger PIN: %d", TRIGGER_PIN_OUT);
 	ESP_LOGI(TAG, "Inner Barrier PIN: %d", INNER_BARRIER_PIN);
@@ -91,13 +134,37 @@ void test_trigger_pins()
 	TEST_INIT_ROOM
 	TEST_ENTER_ROOM
 	TEST_PEAK_OUT_ROOM
-	TEST_ALMOST_LEAVE_ROOM
+	TEST_BREAKS_INNER_AND_OUTER_BUT_RETURNS_G4
 	TEST_LEAVE_ROOM
 	TEST_PEAK_IN_ROOM
-	TEST_ALMOST_ENTER_ROOM
+	TEST_BREAKS_OUTER_AND_INNER_BUT_RETURNS_G4
 	TEST_HALFWAY_LEAVE_ROOM
 	TEST_HALFWAY_ENTER_ROOM
+	TEST_MANIPULATION_LEAVE_ROOM
+
+	// finish with normal behavior
+	TEST_ENTER_ROOM
+	TEST_LEAVE_ROOM
+
+	in_testing_scenario = false;
+	ESP_LOGI(TAG, "End testing");
+}
+
+void test_milestone_one()
+{
+	in_testing_scenario = true;
+	expected_room_count = count;
+
+	TEST_INIT_ROOM
+	TEST_ENTER_ROOM
+	TEST_LEAVE_ROOM
+	TEST_HALFWAY_ENTER_ROOM
+	TEST_BREAKS_OUTER_AND_INNER_BUT_RETURNS_G4
+	TEST_PERSON_TURNED_G9
+	TEST_UNSURE_ENTER_ROOM
 	TEST_MANIPULATION_ENTER_ROOM
+	TEST_PEEK_INTO_AND_LEAVE_G11
+	TEST_SUCCESSIVE_ENTER_ROOM
 
 	// finish with normal behavior
 	TEST_ENTER_ROOM
@@ -150,9 +217,10 @@ void leaveRoom()
 		publish_count();
 }
 
-static void almostEnterRoom()
+static void breaksOuterAndInnerButReturnsG4()
 {
-	ESP_LOGI(TAG, "Command: Almost enter");
+	// original: almost enter
+	ESP_LOGI(TAG, "Command: breakOuterAndInnerButReturnsG4");
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 1);
@@ -171,9 +239,10 @@ static void almostEnterRoom()
 		publish_count();
 }
 
-static void almostLeaveRoom()
+static void breaksInnerAndOuterButReturnsG4()
 {
-	ESP_LOGI(TAG, "Command: Almost leave");
+	// original: almost leave
+	ESP_LOGI(TAG, "Command: breakInnerAndOuterButReturnsG4");
 	gpio_set_level(TRIGGER_PIN_IN, 1);
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
@@ -217,7 +286,6 @@ static void peakOutofRoom()
 		publish_count();
 }
 
-// halfwayEnter in forum but name makes no sense
 static void halfwayLeave()
 {
 	/*someone go to the middle of the doorway, and then turns around*/
@@ -252,11 +320,69 @@ static void halfwayEnter()
 		publish_count();
 }
 
-static void manipulationEnter()
+/**
+ * Corner case from Group9: Almost Enter (slim person).
+ * a person enters the room (breaking the first and then the second light barrier),
+ * turns around (while the second light barrier is still broken),
+ * and leaves the rooms (breaking the first light barrier again quickly after).
+ * expected outcome: no change
+ */
+void personTurnedG9() {
+    ESP_LOGI(TAG,"Command: Person entered the room and turned around");
+    // person entering
+    gpio_set_level(TRIGGER_PIN_OUT, 1);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_OUT, 0);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    // person turning around
+    gpio_set_level(TRIGGER_PIN_IN, 1);
+    vTaskDelay(300 / portTICK_PERIOD_MS); // turning takes time
+    gpio_set_level(TRIGGER_PIN_IN, 0);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    // person left the room again
+    gpio_set_level(TRIGGER_PIN_OUT, 1);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_OUT, 0);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+    if(!in_testing_scenario)
+    	publish_count();
+}
+
+
+/**
+ * someone almost enters the room, but takes one step back (PinIn goes low before PinOut)
+ * before finally entering.
+ * expected outcome: +1
+ */
+void unsureEnter() {
+    ESP_LOGI(TAG,"Command: Unsure Enter");
+    gpio_set_level(TRIGGER_PIN_OUT, 1);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_IN, 1);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_IN, 0);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_OUT, 0);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_OUT, 1);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_IN, 1);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_OUT, 0);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_IN, 0);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    if(!in_testing_scenario)
+    	publish_count();
+}
+
+static void manipulationLeave()
 {
-	/*Someone is trying to manipulate the count by waving their arm through the barrier towards the inside
+	/*Someone is trying to manipulate the count by waving their arm through the barrier towards the outside
  Sequence is not possible if a person enters*/
-	ESP_LOGI(TAG, "Command: Manipulation Enter");
+	ESP_LOGI(TAG, "Command: Manipulation Leave");
 	gpio_set_level(TRIGGER_PIN_IN, 1);
 	vTaskDelay(15 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
@@ -270,10 +396,30 @@ static void manipulationEnter()
 		publish_count();
 }
 
+/**
+* Someone is trying to manipulate the count by waving their arm through the barrier towards the inside
+* Sequence is not possible if a person enters
+* expected outcome: no change
+*/
+static void manipulationEnter(){
+   ESP_LOGI(TAG,"Command: Manipulation Enter ");
+   gpio_set_level(TRIGGER_PIN_OUT,1);
+   vTaskDelay(15 / portTICK_PERIOD_MS);
+   gpio_set_level(TRIGGER_PIN_OUT,0);
+   vTaskDelay(15 / portTICK_PERIOD_MS);
+   gpio_set_level(TRIGGER_PIN_IN, 1);
+   vTaskDelay(15 / portTICK_PERIOD_MS);
+   gpio_set_level(TRIGGER_PIN_IN, 0);
+   vTaskDelay(500 / portTICK_PERIOD_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
+}
+
 static void obstructionInside()
 {
 	/*Someone is standing in the inside barrier, making counting impossible*/
-	//TODO test needs separate task
+	//TODO test would need separate task (not part of milestone)
 	ESP_LOGI(TAG, "Command: Obstruction Inside");
 	gpio_set_level(TRIGGER_PIN_IN, 1);
 	vTaskDelay(6000 / portTICK_RATE_MS);
@@ -287,6 +433,66 @@ static void obstructionInside()
 	if(!in_testing_scenario)
 		publish_count();
 }
+
+/**
+ * Corner case from Group11:
+ * Alice peeks into the room, shortly afterwards Bob leaves the room
+ * expected count result: -1
+ */
+void peekIntoandLeaveG11(){
+	//TODO: fails because of O,O',I sequence
+	ESP_LOGI(TAG,"Command: Peek into and leave");
+	gpio_set_level(TRIGGER_PIN_OUT,1);
+	vTaskDelay(3000 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT,0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+
+	gpio_set_level(TRIGGER_PIN_IN,1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN,0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT,1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT,0);
+	vTaskDelay(500 / portTICK_PERIOD_MS);
+
+	if(!in_testing_scenario)
+		publish_count();
+}
+
+/**
+ * successive entering
+ * Alice enters the room while Bob also enters
+ * expected outcome: +2
+ */
+ void successiveEnter(){
+	 //TODO: fails because of O,O',I sequence
+    ESP_LOGI(TAG,"Command: Successive Enter");
+    // first person entering
+    gpio_set_level(TRIGGER_PIN_OUT,1);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_OUT,0);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    // first person almost inside
+    gpio_set_level(TRIGGER_PIN_IN,1);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    // second person entering
+    gpio_set_level(TRIGGER_PIN_OUT,1);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    // first person inside
+    gpio_set_level(TRIGGER_PIN_IN,0);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    // second person entering
+    gpio_set_level(TRIGGER_PIN_OUT,0);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_IN,1);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    gpio_set_level(TRIGGER_PIN_IN,0);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+
+    if(!in_testing_scenario)
+    	publish_count();
+ }
 
 ///////////////////////////////////////
 
