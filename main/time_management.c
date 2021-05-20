@@ -64,6 +64,7 @@ void loop_time()
 {
 	struct tm tmp_current_time = read_time();
 	if (current_time.tm_hour == 23 && tmp_current_time.tm_hour == 0){
+		count = 0;
 		esp_restart();
 	}
 	if (tmp_current_time.tm_min != current_time.tm_min)

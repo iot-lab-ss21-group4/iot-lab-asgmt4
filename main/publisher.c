@@ -33,7 +33,7 @@ static char MQTT_RESTART_MESSAGE_BUFFER[MQTT_RESTART_MESSAGE_BUFFER_SIZE];
 
 static esp_mqtt_client_handle_t count_mqtt_client;
 
-static const char *TAG_PUB = "ASGM4-PUB";
+static const char *TAG_PUB = "G4-PUB";
 
 static void setup_periodic_timer();
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event);
@@ -49,7 +49,6 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 	case MQTT_EVENT_CONNECTED:
 		ESP_LOGI(TAG_PUB, "MQTT_EVENT_CONNECTED");
 		publish_restart();
-		setup_periodic_timer();
 		break;
 	case MQTT_EVENT_DISCONNECTED:
 		ESP_LOGI(TAG_PUB, "MQTT_EVENT_DISCONNECTED");
@@ -124,4 +123,6 @@ void setup_publisher()
 
 	count_mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
 	esp_mqtt_client_start(count_mqtt_client);
+
+	setup_periodic_timer();
 }

@@ -12,7 +12,7 @@
 
 #define MQTT_BROKER_URI_BUFFER "mqtt://" MQTT_BROKER_HOST
 
-static const char *TAG_SUB = "ASGM4-SUB";
+static const char *TAG_SUB = "G4-SUB";
 
 static void custom_topic_handler(const char *data, int data_len)
 {

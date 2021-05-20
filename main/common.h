@@ -64,7 +64,7 @@ typedef uint8_t barrier_evt_q_item;
 typedef uint8_t count_display_q_item;
 
 extern const char *TAG;
-extern volatile uint8_t count;
+extern volatile RTC_NOINIT_ATTR uint8_t count;
 extern xQueueHandle barrier_evt_q;
 extern xQueueHandle count_display_q;
 extern xQueueHandle count_publish_q;
@@ -74,5 +74,6 @@ extern struct tm current_time;
 void init_logging();
 void init_common_queues();
 void init_esp_dependencies();
+void init_counter();
 
 #endif

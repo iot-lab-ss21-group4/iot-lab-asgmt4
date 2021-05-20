@@ -189,13 +189,13 @@ void enterRoom()
 {
 	ESP_LOGI(TAG, "Command: Enter");
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 1);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(500 / portTICK_RATE_MS);
 
 	if(!in_testing_scenario)
 		publish_count();
@@ -205,13 +205,13 @@ void leaveRoom()
 {
 	ESP_LOGI(TAG, "Command: Leave");
 	gpio_set_level(TRIGGER_PIN_IN, 1);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(100 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
-	vTaskDelay(200 / portTICK_RATE_MS);
+	vTaskDelay(500 / portTICK_RATE_MS);
 
 	if(!in_testing_scenario)
 		publish_count();

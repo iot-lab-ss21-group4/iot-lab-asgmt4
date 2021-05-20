@@ -12,6 +12,7 @@ void app_main(void)
 	init_logging();
 	init_common_queues();
 	init_esp_dependencies();
+	init_counter();
 
 	setup_wifi();
 	setup_time_management();

@@ -1,7 +1,7 @@
 #include "common.h"
 
-const char *TAG = "ASGM4";
-volatile uint8_t count = 0;
+const char *TAG = "G4";
+volatile RTC_NOINIT_ATTR uint8_t count;
 xQueueHandle barrier_evt_q = NULL;
 xQueueHandle count_display_q = NULL;
 xQueueHandle count_publish_q = NULL;
@@ -41,4 +41,22 @@ void init_esp_dependencies()
     }
     ESP_ERROR_CHECK(ret);
     ESP_ERROR_CHECK(esp_netif_init());
+}
+
+void init_counter()
+{
+	esp_reset_reason_t reason = esp_reset_reason();
+	switch (reason)
+	{
+	case ESP_RST_POWERON:
+		count = 0;
+		ESP_LOGI(TAG, "Power reset");
+		break;
+	case ESP_RST_SW:
+		ESP_LOGI(TAG, "Software reset");
+		break;
+	default:
+		ESP_LOGW(TAG, "Unknown reset reason.");
+		break;
+	}
 }
