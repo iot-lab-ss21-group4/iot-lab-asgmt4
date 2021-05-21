@@ -9,7 +9,7 @@
 
 static EventGroupHandle_t s_wifi_event_group;
 static int s_retry_num = 0;
-static bool connected = false;
+static volatile bool connected = false;
 
 const char *WIFI_TAG = "ASGM4-WIFI";
 
@@ -42,7 +42,9 @@ static void event_handler(void *arg, esp_event_base_t event_base,
 		s_retry_num = 0;
 		connected = true;
 		xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
-	} else {
+	}
+	else
+	{
 		ESP_LOGI(WIFI_TAG, "Unknown event received");
 	}
 }
@@ -68,7 +70,8 @@ void wait_until_connection()
 
 void loop_connection()
 {
-	if(!connected){
+	if (!connected)
+	{
 		ESP_LOGW(WIFI_TAG, "Connection lost. Start reconnection.");
 		wait_until_connection();
 	}
