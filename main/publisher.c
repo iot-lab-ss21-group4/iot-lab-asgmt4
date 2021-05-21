@@ -78,7 +78,7 @@ static void publish(char *message)
 
 static void publish_restart()
 {
-	unsigned long long current_epoch_time = read_epoch_time_in_msec();
+	uint64_t current_epoch_time = read_epoch_time_in_msec();
 	snprintf(MQTT_RESTART_MESSAGE_BUFFER, MQTT_RESTART_MESSAGE_BUFFER_SIZE, MQTT_RESTART_MESSAGE_PATTERN,
 			 IOT_PLATFORM_GROUP, IOT_PLATFORM_RESTART_SENSOR_NAME, IOT_PLATFORM_DEVICE_ID, current_epoch_time);
 	publish(MQTT_RESTART_MESSAGE_BUFFER);
@@ -86,7 +86,7 @@ static void publish_restart()
 
 void publish_count()
 {
-	unsigned long long current_epoch_time = read_epoch_time_in_msec();
+	uint64_t current_epoch_time = read_epoch_time_in_msec();
 	snprintf(MQTT_COUNT_MESSAGE_BUFFER, MQTT_COUNT_MESSAGE_BUFFER_SIZE, MQTT_COUNT_MESSAGE_PATTERN,
 			 IOT_PLATFORM_GROUP, IOT_PLATFORM_COUNT_SENSOR_NAME, count, IOT_PLATFORM_DEVICE_ID, current_epoch_time);
 	publish(MQTT_COUNT_MESSAGE_BUFFER);

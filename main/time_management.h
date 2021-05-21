@@ -5,7 +5,7 @@
 
 void setup_time_management();
 struct tm read_time();
-unsigned long long read_epoch_time_in_msec();
+uint64_t read_epoch_time_in_msec();
 void loop_time();
 
 #endif

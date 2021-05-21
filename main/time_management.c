@@ -40,11 +40,11 @@ struct tm read_time()
     return timeinfo;
 }
 
-unsigned long long read_epoch_time_in_msec()
+uint64_t read_epoch_time_in_msec()
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
-    unsigned long long time_in_ms = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
+    uint64_t time_in_ms = (uint64_t)(tv.tv_sec) * 1000 + (uint64_t)(tv.tv_usec) / 1000;
     return time_in_ms;
 }
 
@@ -62,15 +62,16 @@ void setup_time_management()
 
 void loop_time()
 {
-	struct tm tmp_current_time = read_time();
-	if (current_time.tm_hour == 23 && tmp_current_time.tm_hour == 0){
-		count = 0;
-		esp_restart();
-	}
-	if (tmp_current_time.tm_min != current_time.tm_min)
-	{
-		current_time = tmp_current_time;
-		// TODO: use different change type for queues so that the whole display does not need to be erased
-		xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
-	}
+    struct tm tmp_current_time = read_time();
+    if (current_time.tm_hour == 23 && tmp_current_time.tm_hour == 0)
+    {
+        count = 0;
+        esp_restart();
+    }
+    if (tmp_current_time.tm_min != current_time.tm_min)
+    {
+        current_time = tmp_current_time;
+        // TODO: use different change type for queues so that the whole display does not need to be erased
+        xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
+    }
 }
