@@ -68,7 +68,7 @@ void wait_until_connection()
 	xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT);
 }
 
-void loop_connection()
+void loop_wifi()
 {
 	if (!connected)
 	{

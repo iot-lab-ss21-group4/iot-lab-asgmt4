@@ -33,7 +33,7 @@ void app_main(void)
 	{
 		loop_time();
 		loop_transitions();
-		loop_connection();
+		loop_wifi();
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
 	}
 }
