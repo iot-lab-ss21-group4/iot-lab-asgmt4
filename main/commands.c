@@ -4,14 +4,10 @@
 
 static uint8_t expected_room_count = 0;
 
-#define TEST_INIT_ROOM                                                  \
-	do                                                                  \
-	{                                                                   \
-		assert_room_count(expected_room_count, "Test Initial Counter"); \
-	} while (0);
 #define TEST_ENTER_ROOM                                            \
 	do                                                             \
 	{                                                              \
+		expected_room_count = count;                               \
 		enterRoom();                                               \
 		if (expected_room_count < MAX_ROOM_COUNT)                  \
 			expected_room_count++;                                 \
@@ -20,6 +16,7 @@ static uint8_t expected_room_count = 0;
 #define TEST_LEAVE_ROOM                                            \
 	do                                                             \
 	{                                                              \
+		expected_room_count = count;                               \
 		leaveRoom();                                               \
 		if (expected_room_count > MIN_ROOM_COUNT)                  \
 			expected_room_count--;                                 \
@@ -28,68 +25,79 @@ static uint8_t expected_room_count = 0;
 #define TEST_PEAK_OUT_ROOM                                               \
 	do                                                                   \
 	{                                                                    \
+		expected_room_count = count;                                     \
 		peakOutofRoom();                                                 \
 		assert_room_count(expected_room_count, "Test Peak Out Of Room"); \
 	} while (0);
 #define TEST_PEAK_IN_ROOM                                              \
 	do                                                                 \
 	{                                                                  \
+		expected_room_count = count;                                   \
 		peakIntoRoom();                                                \
 		assert_room_count(expected_room_count, "Test Peak Into Room"); \
 	} while (0);
 #define TEST_HALFWAY_LEAVE_ROOM                                            \
 	do                                                                     \
 	{                                                                      \
+		expected_room_count = count;                                       \
 		halfwayLeave();                                                    \
 		assert_room_count(expected_room_count, "Test Halfway Leave Room"); \
 	} while (0);
 #define TEST_HALFWAY_ENTER_ROOM                                            \
 	do                                                                     \
 	{                                                                      \
+		expected_room_count = count;                                       \
 		halfwayEnter();                                                    \
 		assert_room_count(expected_room_count, "Test Halfway Enter Room"); \
 	} while (0);
 #define TEST_MANIPULATION_LEAVE_ROOM                                            \
 	do                                                                          \
 	{                                                                           \
+		expected_room_count = count;                                            \
 		manipulationLeave();                                                    \
 		assert_room_count(expected_room_count, "Test Manipulation Leave Room"); \
 	} while (0);
 #define TEST_MANIPULATION_ENTER_ROOM                                            \
 	do                                                                          \
 	{                                                                           \
+		expected_room_count = count;                                            \
 		manipulationEnter();                                                    \
 		assert_room_count(expected_room_count, "Test Manipulation Enter Room"); \
 	} while (0);
 #define TEST_BREAKS_OUTER_AND_INNER_BUT_RETURNS_G4                                       \
-	do                                                                    				 \
-	{                                                                     				 \
+	do                                                                                   \
+	{                                                                                    \
+		expected_room_count = count;                                                     \
 		breaksOuterAndInnerButReturnsG4();                                               \
 		assert_room_count(expected_room_count, "Test BreaksOuterAndInnerButReturns G4"); \
 	} while (0);
 #define TEST_BREAKS_INNER_AND_OUTER_BUT_RETURNS_G4                                       \
-	do                                                                    				 \
-	{                                                                     				 \
+	do                                                                                   \
+	{                                                                                    \
+		expected_room_count = count;                                                     \
 		breaksInnerAndOuterButReturnsG4();                                               \
 		assert_room_count(expected_room_count, "Test BreaksInnerAndOuterButReturns G4"); \
 	} while (0);
 #define TEST_PERSON_TURNED_G9                                            \
 	do                                                                   \
 	{                                                                    \
+		expected_room_count = count;                                     \
 		personTurnedG9();                                                \
 		assert_room_count(expected_room_count, "Test Person Turned G9"); \
 	} while (0);
-#define TEST_UNSURE_ENTER_ROOM                                            \
+#define TEST_UNSURE_ENTER_ROOM                                       \
 	do                                                               \
 	{                                                                \
+		expected_room_count = count;                                 \
 		unsureEnter();                                               \
 		if (expected_room_count < MAX_ROOM_COUNT)                    \
-			expected_room_count++;                                 	 \
+			expected_room_count++;                                   \
 		assert_room_count(expected_room_count, "Test Unsure Enter"); \
 	} while (0);
 #define TEST_PEEK_INTO_AND_LEAVE_G11                                            \
 	do                                                                          \
 	{                                                                           \
+		expected_room_count = count;                                            \
 		peekIntoandLeaveG11();                                                  \
 		if (expected_room_count > MIN_ROOM_COUNT)                               \
 			expected_room_count--;                                              \
@@ -98,11 +106,12 @@ static uint8_t expected_room_count = 0;
 #define TEST_SUCCESSIVE_ENTER_ROOM                                       \
 	do                                                                   \
 	{                                                                    \
+		expected_room_count = count;                                     \
 		successiveEnter();                                               \
 		if (expected_room_count < MAX_ROOM_COUNT)                        \
-			expected_room_count++;                                 	     \
+			expected_room_count++;                                       \
 		if (expected_room_count < MAX_ROOM_COUNT)                        \
-			expected_room_count++;                                 	     \
+			expected_room_count++;                                       \
 		assert_room_count(expected_room_count, "Test Successive Enter"); \
 	} while (0);
 
@@ -129,9 +138,8 @@ void test_trigger_pins()
 	ESP_LOGI(TAG, "Outer Trigger PIN: %d", TRIGGER_PIN_OUT);
 	ESP_LOGI(TAG, "Inner Barrier PIN: %d", INNER_BARRIER_PIN);
 	ESP_LOGI(TAG, "Outer Barrier PIN: %d", OUTER_BARRIER_PIN);
-	expected_room_count = count;
+	uint8_t old_count = count;
 
-	TEST_INIT_ROOM
 	TEST_ENTER_ROOM
 	TEST_PEAK_OUT_ROOM
 	TEST_BREAKS_INNER_AND_OUTER_BUT_RETURNS_G4
@@ -146,6 +154,7 @@ void test_trigger_pins()
 	TEST_ENTER_ROOM
 	TEST_LEAVE_ROOM
 
+	count = old_count;
 	in_testing_scenario = false;
 	ESP_LOGI(TAG, "End testing");
 }
@@ -154,8 +163,8 @@ void test_milestone_one()
 {
 	in_testing_scenario = true;
 	expected_room_count = count;
+	uint8_t old_count = count;
 
-	TEST_INIT_ROOM
 	TEST_ENTER_ROOM
 	TEST_LEAVE_ROOM
 	TEST_HALFWAY_ENTER_ROOM
@@ -170,6 +179,7 @@ void test_milestone_one()
 	TEST_ENTER_ROOM
 	TEST_LEAVE_ROOM
 
+	count = old_count;
 	in_testing_scenario = false;
 	ESP_LOGI(TAG, "End testing");
 }
@@ -197,7 +207,7 @@ void enterRoom()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -213,7 +223,7 @@ void leaveRoom()
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -235,7 +245,7 @@ static void breaksOuterAndInnerButReturnsG4()
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -257,7 +267,7 @@ static void breaksInnerAndOuterButReturnsG4()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -270,7 +280,7 @@ static void peakIntoRoom()
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -282,7 +292,7 @@ static void peakOutofRoom()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -299,7 +309,7 @@ static void halfwayLeave()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -316,7 +326,7 @@ static void halfwayEnter()
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -327,55 +337,56 @@ static void halfwayEnter()
  * and leaves the rooms (breaking the first light barrier again quickly after).
  * expected outcome: no change
  */
-void personTurnedG9() {
-    ESP_LOGI(TAG,"Command: Person entered the room and turned around");
-    // person entering
-    gpio_set_level(TRIGGER_PIN_OUT, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_OUT, 0);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    // person turning around
-    gpio_set_level(TRIGGER_PIN_IN, 1);
-    vTaskDelay(300 / portTICK_PERIOD_MS); // turning takes time
-    gpio_set_level(TRIGGER_PIN_IN, 0);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    // person left the room again
-    gpio_set_level(TRIGGER_PIN_OUT, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_OUT, 0);
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+void personTurnedG9()
+{
+	ESP_LOGI(TAG, "Command: Person entered the room and turned around");
+	// person entering
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	// person turning around
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(300 / portTICK_PERIOD_MS); // turning takes time
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	// person left the room again
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(1000 / portTICK_PERIOD_MS);
 
-    if(!in_testing_scenario)
-    	publish_count();
+	if (!in_testing_scenario)
+		publish_count();
 }
-
 
 /**
  * someone almost enters the room, but takes one step back (PinIn goes low before PinOut)
  * before finally entering.
  * expected outcome: +1
  */
-void unsureEnter() {
-    ESP_LOGI(TAG,"Command: Unsure Enter");
-    gpio_set_level(TRIGGER_PIN_OUT, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_IN, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_IN, 0);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_OUT, 0);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_OUT, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_IN, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_OUT, 0);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_IN, 0);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+void unsureEnter()
+{
+	ESP_LOGI(TAG, "Command: Unsure Enter");
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    if(!in_testing_scenario)
-    	publish_count();
+	if (!in_testing_scenario)
+		publish_count();
 }
 
 static void manipulationLeave()
@@ -392,7 +403,7 @@ static void manipulationLeave()
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -401,18 +412,19 @@ static void manipulationLeave()
 * Sequence is not possible if a person enters
 * expected outcome: no change
 */
-static void manipulationEnter(){
-   ESP_LOGI(TAG,"Command: Manipulation Enter ");
-   gpio_set_level(TRIGGER_PIN_OUT,1);
-   vTaskDelay(15 / portTICK_PERIOD_MS);
-   gpio_set_level(TRIGGER_PIN_OUT,0);
-   vTaskDelay(15 / portTICK_PERIOD_MS);
-   gpio_set_level(TRIGGER_PIN_IN, 1);
-   vTaskDelay(15 / portTICK_PERIOD_MS);
-   gpio_set_level(TRIGGER_PIN_IN, 0);
-   vTaskDelay(500 / portTICK_PERIOD_MS);
+static void manipulationEnter()
+{
+	ESP_LOGI(TAG, "Command: Manipulation Enter ");
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(15 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(15 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(15 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(500 / portTICK_PERIOD_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -430,7 +442,7 @@ static void obstructionInside()
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_RATE_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -439,24 +451,25 @@ static void obstructionInside()
  * Alice peeks into the room, shortly afterwards Bob leaves the room
  * expected count result: -1
  */
-void peekIntoandLeaveG11(){
+void peekIntoandLeaveG11()
+{
 	//TODO: fails because of O,O',I sequence
-	ESP_LOGI(TAG,"Command: Peek into and leave");
-	gpio_set_level(TRIGGER_PIN_OUT,1);
+	ESP_LOGI(TAG, "Command: Peek into and leave");
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
 	vTaskDelay(3000 / portTICK_PERIOD_MS);
-	gpio_set_level(TRIGGER_PIN_OUT,0);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(100 / portTICK_PERIOD_MS);
 
-	gpio_set_level(TRIGGER_PIN_IN,1);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
 	vTaskDelay(100 / portTICK_PERIOD_MS);
-	gpio_set_level(TRIGGER_PIN_IN,0);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(100 / portTICK_PERIOD_MS);
-	gpio_set_level(TRIGGER_PIN_OUT,1);
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
 	vTaskDelay(100 / portTICK_PERIOD_MS);
-	gpio_set_level(TRIGGER_PIN_OUT,0);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(500 / portTICK_PERIOD_MS);
 
-	if(!in_testing_scenario)
+	if (!in_testing_scenario)
 		publish_count();
 }
 
@@ -465,34 +478,35 @@ void peekIntoandLeaveG11(){
  * Alice enters the room while Bob also enters
  * expected outcome: +2
  */
- void successiveEnter(){
-	 //TODO: fails because of O,O',I sequence
-    ESP_LOGI(TAG,"Command: Successive Enter");
-    // first person entering
-    gpio_set_level(TRIGGER_PIN_OUT,1);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_OUT,0);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    // first person almost inside
-    gpio_set_level(TRIGGER_PIN_IN,1);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    // second person entering
-    gpio_set_level(TRIGGER_PIN_OUT,1);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    // first person inside
-    gpio_set_level(TRIGGER_PIN_IN,0);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    // second person entering
-    gpio_set_level(TRIGGER_PIN_OUT,0);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_IN,1);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-    gpio_set_level(TRIGGER_PIN_IN,0);
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+void successiveEnter()
+{
+	//TODO: fails because of O,O',I sequence
+	ESP_LOGI(TAG, "Command: Successive Enter");
+	// first person entering
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	// first person almost inside
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	// second person entering
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	// first person inside
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	// second person entering
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(500 / portTICK_PERIOD_MS);
 
-    if(!in_testing_scenario)
-    	publish_count();
- }
+	if (!in_testing_scenario)
+		publish_count();
+}
 
 ///////////////////////////////////////
 
