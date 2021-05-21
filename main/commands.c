@@ -485,10 +485,10 @@ void successiveEnter()
 	// first person entering
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
 	vTaskDelay(50 / portTICK_PERIOD_MS);
-	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
 	vTaskDelay(50 / portTICK_PERIOD_MS);
 	// first person almost inside
-	gpio_set_level(TRIGGER_PIN_IN, 1);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(50 / portTICK_PERIOD_MS);
 	// second person entering
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
@@ -497,9 +497,9 @@ void successiveEnter()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(50 / portTICK_PERIOD_MS);
 	// second person entering
-	gpio_set_level(TRIGGER_PIN_OUT, 0);
-	vTaskDelay(50 / portTICK_PERIOD_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
 	vTaskDelay(50 / portTICK_PERIOD_MS);
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(500 / portTICK_PERIOD_MS);
