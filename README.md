@@ -8,4 +8,4 @@
 * **subscriber**: setup of MQTT subscriber, message handling and event handler
 * **mqtt_message**: collection of MQTT messages that can be sent from the broker
 * **transitions**: setup of (light) barriers for event detection, ISR processing, logic of finite state machine
-* **commands**: collection of commands from the stuff, optional test scripts
+* **commands**: collection of commands from the advisors, optional test scripts
