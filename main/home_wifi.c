@@ -11,7 +11,7 @@ static EventGroupHandle_t s_wifi_event_group;
 static int s_retry_num = 0;
 static volatile bool connected = false;
 
-const char *WIFI_TAG = "ASGM4-WIFI";
+const char *WIFI_TAG = "G4-WIFI";
 
 static void event_handler(void *arg, esp_event_base_t event_base,
 						  int32_t event_id, void *event_data)
