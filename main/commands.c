@@ -453,7 +453,6 @@ static void obstructionInside()
  */
 void peekIntoandLeaveG11()
 {
-	//TODO: fails because of O,O',I sequence
 	ESP_LOGI(TAG, "Command: Peek into and leave");
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
 	vTaskDelay(3000 / portTICK_PERIOD_MS);
@@ -480,7 +479,6 @@ void peekIntoandLeaveG11()
  */
 void successiveEnter()
 {
-	//TODO: fails because of O,O',I sequence
 	ESP_LOGI(TAG, "Command: Successive Enter");
 	// first person entering
 	gpio_set_level(TRIGGER_PIN_OUT, 1);

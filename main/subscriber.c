@@ -75,8 +75,6 @@ void setup_subscriber()
 	gpio_set_direction(TRIGGER_PIN_IN, GPIO_MODE_OUTPUT);
 	gpio_set_direction(TRIGGER_PIN_OUT, GPIO_MODE_OUTPUT);
 
-	// TODO: using the breadboard with I---[][]---O connections sometimes the signal is not going from I PIN to O PIN
-
 	ESP_LOGI(TAG_SUB, "Use URI: %s", MQTT_BROKER_URI_BUFFER);
 	ESP_LOGI(TAG_SUB, "Use Topic: %s", MQTT_SUB_TOPIC);
 

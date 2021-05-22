@@ -71,7 +71,7 @@ void loop_time()
     if (tmp_current_time.tm_min != current_time.tm_min)
     {
         current_time = tmp_current_time;
-        // TODO: use different change type for queues so that the whole display does not need to be erased
+        // TODO: esthetic feature: different change type for oled queue so that the whole display does not need to be erased
         xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
     }
 }
