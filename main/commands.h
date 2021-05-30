@@ -7,5 +7,18 @@ void test_milestone_one();
 void enterRoom();
 void leaveRoom();
 void pingOnBoardLED();
+void breaksOuterAndInnerButReturnsG4();
+void breaksInnerAndOuterButReturnsG4();
+void peakIntoRoom();
+void peakOutofRoom();
+void halfwayLeave();
+void halfwayEnter();
+void personTurnedG9();
+void unsureEnter();
+void manipulationLeave();
+void manipulationEnter();
+void obstructionInside();
+void peekIntoandLeaveG11();
+void successiveEnter();
 
 #endif

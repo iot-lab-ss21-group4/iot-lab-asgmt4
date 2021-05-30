@@ -28,6 +28,34 @@ static void custom_topic_handler(const char *data, int data_len)
 	{
 		pingOnBoardLED();
 	}
+	else if (strncmp(data, HALFWAY_ENTER_MSG, data_len) == 0)
+	{
+		halfwayEnter();
+	}
+	else if (strncmp(data, BREAKS_OUTER_AND_INNER_BUT_RETURNS_G4_MSG, data_len) == 0)
+	{
+		breaksOuterAndInnerButReturnsG4();
+	}
+	else if (strncmp(data, PERSON_TURNED_G9_MSG, data_len) == 0)
+	{
+		personTurnedG9();
+	}
+	else if (strncmp(data, UNSURE_ENTER_MSG, data_len) == 0)
+	{
+		unsureEnter();
+	}
+	else if (strncmp(data, MANIPULATION_ENTER_MSG, data_len) == 0)
+	{
+		manipulationEnter();
+	}
+	else if (strncmp(data, PEEK_INTO_AND_LEAVE_G11_MSG, data_len) == 0)
+	{
+		peekIntoandLeaveG11();
+	}
+	else if (strncmp(data, SUCCESSIVE_ENTER_MSG, data_len) == 0)
+	{
+		successiveEnter();
+	}
 }
 
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
