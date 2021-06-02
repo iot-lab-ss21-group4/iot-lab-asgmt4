@@ -115,19 +115,6 @@ static uint8_t expected_room_count = 0;
 		assert_room_count(expected_room_count, "Test Successive Enter"); \
 	} while (0);
 
-static void breaksOuterAndInnerButReturnsG4();
-static void breaksInnerAndOuterButReturnsG4();
-static void peakIntoRoom();
-static void peakOutofRoom();
-static void halfwayLeave();
-static void halfwayEnter();
-static void manipulationEnter();
-static void manipulationLeave();
-static void obstructionInside();
-static void personTurnedG9();
-static void unsureEnter();
-static void peekIntoandLeaveG11();
-static void successiveEnter();
 static void assert_room_count(uint8_t expected_count, const char *test_description);
 
 void test_trigger_pins()
@@ -227,7 +214,7 @@ void leaveRoom()
 		publish_count();
 }
 
-static void breaksOuterAndInnerButReturnsG4()
+void breaksOuterAndInnerButReturnsG4()
 {
 	// original: almost enter
 	ESP_LOGI(TAG, "Command: breakOuterAndInnerButReturnsG4");
@@ -249,7 +236,7 @@ static void breaksOuterAndInnerButReturnsG4()
 		publish_count();
 }
 
-static void breaksInnerAndOuterButReturnsG4()
+void breaksInnerAndOuterButReturnsG4()
 {
 	// original: almost leave
 	ESP_LOGI(TAG, "Command: breakInnerAndOuterButReturnsG4");
@@ -271,7 +258,7 @@ static void breaksInnerAndOuterButReturnsG4()
 		publish_count();
 }
 
-static void peakIntoRoom()
+void peakIntoRoom()
 {
 	/*reach out one's head towards room, then lean back*/
 	ESP_LOGI(TAG, "Command: Peak In");
@@ -284,7 +271,7 @@ static void peakIntoRoom()
 		publish_count();
 }
 
-static void peakOutofRoom()
+void peakOutofRoom()
 {
 	ESP_LOGI(TAG, "Command: Peak Out");
 	gpio_set_level(TRIGGER_PIN_IN, 1);
@@ -296,7 +283,7 @@ static void peakOutofRoom()
 		publish_count();
 }
 
-static void halfwayLeave()
+void halfwayLeave()
 {
 	/*someone go to the middle of the doorway, and then turns around*/
 	ESP_LOGI(TAG, "Command: Half Leave");
@@ -313,7 +300,7 @@ static void halfwayLeave()
 		publish_count();
 }
 
-static void halfwayEnter()
+void halfwayEnter()
 {
 	/*someone go to the middle of the doorway, and then turns around*/
 	ESP_LOGI(TAG, "Command: Half Enter");
@@ -389,7 +376,7 @@ void unsureEnter()
 		publish_count();
 }
 
-static void manipulationLeave()
+void manipulationLeave()
 {
 	/*Someone is trying to manipulate the count by waving their arm through the barrier towards the outside
  Sequence is not possible if a person enters*/
@@ -412,7 +399,7 @@ static void manipulationLeave()
 * Sequence is not possible if a person enters
 * expected outcome: no change
 */
-static void manipulationEnter()
+void manipulationEnter()
 {
 	ESP_LOGI(TAG, "Command: Manipulation Enter ");
 	gpio_set_level(TRIGGER_PIN_OUT, 1);
@@ -428,7 +415,7 @@ static void manipulationEnter()
 		publish_count();
 }
 
-static void obstructionInside()
+void obstructionInside()
 {
 	/*Someone is standing in the inside barrier, making counting impossible*/
 	//TODO test would need separate task (not part of milestone)
