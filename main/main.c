@@ -6,6 +6,7 @@
 #include "commands.h"
 #include "subscriber.h"
 #include "publisher.h"
+#include "subscriber_edge.h"
 
 void app_main(void)
 {
@@ -25,6 +26,10 @@ void app_main(void)
 	test_trigger_pins();
 	test_milestone_one();
 #endif
+#endif
+
+#if GET_EDGE_EVENTS
+	setup_edge_subscriber();
 #endif
 
 	setup_publisher();

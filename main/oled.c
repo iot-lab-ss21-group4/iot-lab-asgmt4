@@ -30,8 +30,7 @@ static void showRoomState()
     strftime(TIME_BUFFER, TIME_BUFFER_SIZE, TIME_PATTERN, &current_time);
     snprintf(GROUP_AND_TIME_BUFFER, GROUP_AND_TIME_BUFFER_SIZE, GROUP_AND_TIME_PATTERN, GROUP_BUFFER, TIME_BUFFER);
 
-    // TODO: why in the slides 00  00 ?? One counter for the esp and one for the counter of another ESP ?
-    snprintf(COUNTING_BUFFER, COUNTING_BUFFER_SIZE, COUNTING_PATTERN, count, 0);
+    snprintf(COUNTING_BUFFER, COUNTING_BUFFER_SIZE, COUNTING_PATTERN, count, forecast);
 
     ssd1306_printFixedN(0, 0, GROUP_AND_TIME_BUFFER, STYLE_NORMAL, 1);
     ssd1306_printFixedN(0, 24, COUNTING_BUFFER, STYLE_NORMAL, 2);
