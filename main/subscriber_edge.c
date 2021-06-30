@@ -19,7 +19,7 @@ static const char *TAG_SUB = "G4-EDGE-SUB";
 
 static int is_number(char *number_str, int len){
 	for (uint8_t i = 0; i < len; i++){
-		if (number_str[i] <= '0' || '9' <= number_str[i]){
+		if (number_str[i] < '0' || '9' < number_str[i]){
 			return 0;
 		}
 	}
