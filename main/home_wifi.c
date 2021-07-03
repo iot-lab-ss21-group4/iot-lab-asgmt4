@@ -9,7 +9,6 @@
 
 static EventGroupHandle_t s_wifi_event_group;
 static int s_retry_num = 0;
-static volatile bool connected = false;
 
 const char *WIFI_TAG = "G4-WIFI";
 
@@ -22,7 +21,6 @@ static void event_handler(void *arg, esp_event_base_t event_base,
 	}
 	else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED)
 	{
-		connected = false;
 		if (s_retry_num < ESP_WIFI_MAXIMUM_RETRY)
 		{
 			esp_wifi_connect();
@@ -31,17 +29,17 @@ static void event_handler(void *arg, esp_event_base_t event_base,
 		}
 		else
 		{
-			xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
+			ESP_LOGW(WIFI_TAG, "No connection after %d tries. Restart.", ESP_WIFI_MAXIMUM_RETRY);
+			esp_restart();
 		}
-		ESP_LOGI(WIFI_TAG, "connect to the AP fail");
 	}
 	else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
 	{
 		ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
 		ESP_LOGI(WIFI_TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
 		s_retry_num = 0;
-		connected = true;
 		xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
+		ESP_LOGI(WIFI_TAG, "connected to ap SSID:%s password:%s", ESP_WIFI_SSID, ESP_WIFI_PASS);
 	}
 	else
 	{
@@ -51,30 +49,15 @@ static void event_handler(void *arg, esp_event_base_t event_base,
 
 void wait_until_connection()
 {
-	/* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
-	 * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
-	EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
-										   WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
-										   pdFALSE,
-										   pdFALSE,
-										   portMAX_DELAY);
+	/* Waiting until either the connection is established (WIFI_CONNECTED_BIT).
+	The bit is set by event_handler() (see above) */
+	xEventGroupWaitBits(s_wifi_event_group,
+						WIFI_CONNECTED_BIT,
+						pdFALSE,
+						pdFALSE,
+						portMAX_DELAY);
 
-	if (bits & WIFI_FAIL_BIT)
-	{
-		ESP_LOGW(WIFI_TAG, "No connection after %d tries. Restart.", ESP_WIFI_MAXIMUM_RETRY);
-		esp_restart();
-	}
-	ESP_LOGI(WIFI_TAG, "connected to ap SSID:%s password:%s", ESP_WIFI_SSID, ESP_WIFI_PASS);
-	xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT);
-}
-
-void loop_wifi()
-{
-	if (!connected)
-	{
-		ESP_LOGW(WIFI_TAG, "Connection lost. Start reconnection.");
-		wait_until_connection();
-	}
+	xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
 }
 
 void setup_wifi()
