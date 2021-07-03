@@ -70,7 +70,7 @@ menu "Example Configuration"
             This ESP will subscribe to the published room entry/leave events in IoT platform room broker.
             So, in addition to updating count by changes in the barrier pin levels, it will trigger such
             changes itself using room events as well.
-            
+
     config GET_EDGE_EVENTS
         bool "ESP will subscribe to forecast events in Edge VM forecast broker"
         default "y"
@@ -146,18 +146,17 @@ menu "Example Configuration"
         string "Password for authentication on the room events broker on the IoT platform"
         help
             See slides for password
-            
+
     config EDGE_FORECAST_BROKER_HOST
         string "Host name of the room count forecast broker on the Edge VM"
         default "138.246.235.18"
-        
+
     config EDGE_FORECAST_BROKER_PORT
         int "Port of the room count forecast broker on the Edge VM"
         default 1883
-    
+
     config EDGE_FORECAST_BROKER_TOPIC
         string "Name of the topic for room count forecast events on the Edge VM"
-        default "EDGE_FORECAST"    
-    
+        default "EDGE_FORECAST"
 
 endmenu
