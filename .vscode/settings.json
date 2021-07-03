@@ -3,6 +3,15 @@
   "idf.flashType": "UART",
   "files.associations": {
     "common.h": "c",
-    "sdkconfig.h": "c"
+    "sdkconfig.h": "c",
+    "chrono": "c",
+    "condition_variable": "c",
+    "algorithm": "c",
+    "istream": "c",
+    "limits": "c",
+    "mutex": "c",
+    "streambuf": "c",
+    "thread": "c",
+    "*.ipp": "c"
   }
 }

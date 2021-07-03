@@ -48,6 +48,31 @@ uint64_t read_epoch_time_in_msec()
     return time_in_ms;
 }
 
+void time_checker_task()
+{
+    while (1)
+    {
+        struct tm tmp_current_time = read_time();
+        current_time = tmp_current_time;
+        // TODO: esthetic feature: different change type for oled queue so that the whole display does not need to be erased
+        xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
+        // Roughly at the beginning of each minute, update the displayed time.
+        vTaskDelay((60 - tmp_current_time.tm_sec) * 1000 / portTICK_PERIOD_MS);
+    }
+}
+
+void count_resetter_task()
+{
+    while (1)
+    {
+        struct tm tmp_current_time = read_time();
+        // Roughly each midnight, reset the count to 0 and restart the board.
+        vTaskDelay((86400 - (tmp_current_time.tm_hour * 3600 + tmp_current_time.tm_min * 60 + tmp_current_time.tm_sec)) * 1000 / portTICK_PERIOD_MS);
+        count = 0;
+        esp_restart();
+    }
+}
+
 void setup_time_management()
 {
     ESP_LOGI(TAG, "Initializing SNTP");
@@ -57,21 +82,6 @@ void setup_time_management()
     sntp_set_sync_mode(SNTP_SYNC_MODE_SMOOTH);
     sntp_init();
     obtain_time();
-    current_time = read_time();
-}
-
-void loop_time()
-{
-    struct tm tmp_current_time = read_time();
-    if (current_time.tm_hour == 23 && tmp_current_time.tm_hour == 0)
-    {
-        count = 0;
-        esp_restart();
-    }
-    if (tmp_current_time.tm_min != current_time.tm_min)
-    {
-        current_time = tmp_current_time;
-        // TODO: esthetic feature: different change type for oled queue so that the whole display does not need to be erased
-        xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
-    }
+    xTaskCreate(time_checker_task, "time_checker_task", 4096, NULL, 9, NULL);
+    xTaskCreate(count_resetter_task, "count_resetter_task", 4096, NULL, 9, NULL);
 }

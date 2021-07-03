@@ -34,10 +34,9 @@ void app_main(void)
 
 	setup_publisher();
 
-	while (1)
-	{
-		loop_time();
-		loop_transitions();
-		vTaskDelay(1000 / portTICK_PERIOD_MS);
-	}
+	// while (1)
+	// {
+	// 	loop_transitions();
+	// 	vTaskDelay(1000 / portTICK_PERIOD_MS);
+	// }
 }
